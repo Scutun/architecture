@@ -10,8 +10,10 @@ class modelUsers {
 		try {
 			const hash = bcrypt.hashSync(info.password, bcrypt.genSaltSync(10))
 
-			await db.query(`insert inro users (email, password, surname, firstName) 
+			const user = await db.query(`insert into users (email, password, surname, firstName) 
                 values ('${info.email}', '${hash}', '${info.surname}', '${info.name}') returning email, surname, firstName`)
+
+			return user.rows[0]
 		} catch (e) {
 			throw new Error()
 		}
