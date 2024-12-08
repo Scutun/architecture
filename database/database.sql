@@ -62,6 +62,10 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Done') THEN
     INSERT INTO status (name) VALUES ('Done');
   END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Canceled') THEN
+    INSERT INTO status (name) VALUES ('Canceled');
+  END IF;
 END $$;
 
 

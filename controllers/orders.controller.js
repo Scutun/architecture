@@ -5,7 +5,7 @@ const model = require("../models/orders.model")
 class userController {
 	async createOrder(req, res) {
 		try {
-			const info = await model.newOrder(req.headers.authorisation, req.body)
+			const info = await model.newOrder(req.headers.authorization, req.body)
 			res.json(info)
 		} catch (e) {
 			res.status(400).json({
@@ -15,7 +15,7 @@ class userController {
 	}
 	async getOneOrder(req, res) {
 		try {
-			const order = await model.getCurrentOrder(req.headers.authorisation)
+			const order = await model.getCurrentOrder(req.headers.authorization)
 			res.json(order)
 		} catch (e) {
 			res.status(404).json({
@@ -25,7 +25,7 @@ class userController {
 	}
 	async getOrders(req, res) {
 		try {
-			const orders = await model.getAllOrders(req.headers.authorisation)
+			const orders = await model.getAllOrders(req.headers.authorization)
 			res.json(orders)
 		} catch (e) {
 			res.status(404).json({
