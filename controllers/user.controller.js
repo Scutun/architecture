@@ -8,7 +8,9 @@ class userController {
 			const info = await model.newUser(req.body)
 			res.json(info)
 		} catch (e) {
-			res.sendStatus(400)
+			res.status(400).json({
+				error: e.message,
+			})
 		}
 	}
 	async logUser(req, res) {
@@ -16,7 +18,9 @@ class userController {
 			const allow = await model.logInUser(req.body)
 			res.json({ token: allow })
 		} catch (e) {
-			res.sendStatus(403)
+			res.status(403).json({
+				error: e.message,
+			})
 		}
 	}
 	async getUser(req, res) {
@@ -25,16 +29,20 @@ class userController {
 
 			res.json(info)
 		} catch (e) {
-			res.sendStatus(404)
+			res.status(404).json({
+				error: e.message,
+			})
 		}
 	}
 	async getUserInOrders(req, res) {
 		try {
-			const info = await model.getuserByOrder(req.params.id)
+			const info = await model.getUserByOrder(req.params.id)
 
 			res.json(info)
 		} catch (e) {
-			res.sendStatus(404)
+			res.status(404).json({
+				error: e.message,
+			})
 		}
 	}
 	async updateUser(req, res) {
@@ -43,7 +51,9 @@ class userController {
 
 			res.json(info)
 		} catch (e) {
-			res.sendStatus(400)
+			res.status(400).json({
+				error: e.message,
+			})
 		}
 	}
 	async deleteUser(req, res) {
@@ -51,7 +61,9 @@ class userController {
 			const info = await model.deletedUser(req.headers.authorization)
 			res.json({ id: info })
 		} catch (e) {
-			res.sendStatus(404)
+			res.status(404).json({
+				error: e.message,
+			})
 		}
 	}
 }

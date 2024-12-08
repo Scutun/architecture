@@ -8,105 +8,117 @@ const jwt = require("jsonwebtoken")
 class modelUsers {
 	async newUser(info) {
 		try {
+			const check = await db.query(`select * from users where email = '${info.email}'`)
+
+			if (check.rows.length !== 0) {
+				throw new Error("User with this email already exists.")
+			}
+
 			const hash = bcrypt.hashSync(info.password, bcrypt.genSaltSync(10))
 
-			const user = await db.query(`insert into users (email, password, surname, firstName) 
-                values ('${info.email}', '${hash}', '${info.surname}', '${info.name}') returning email, surname, firstName as name`)
+			const user = await db.query(
+				`insert into users (email, password, surname, firstName) 
+				values ('${info.email}', '${hash}', '${info.surname}', '${info.name}') 
+				returning email, surname, firstName as name`
+			)
 
 			return user.rows[0]
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Failed to create a new user: ${e.message}`)
 		}
 	}
+
 	async logInUser(info) {
 		try {
 			const data = await db.query(`select * from users where email = '${info.email}'`)
 
-			if (data.rows[0].length === 0) {
-				throw new Error()
+			if (data.rows.length === 0) {
+				throw new Error("No such user found.")
 			}
 			if (!bcrypt.compareSync(info.password, data.rows[0].password)) {
-				throw new Error()
+				throw new Error("Invalid password.")
 			}
+
 			const token = jwt.sign({ id: data.rows[0].id }, process.env.ACCESS_TOKEN_SECRET)
 			return token
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Login failed: ${e.message}`)
 		}
 	}
+
 	async getUserById(token) {
 		try {
 			const authHeaders = token && token.split(" ")[1]
-
 			const decodedToken = jwt.verify(authHeaders, process.env.ACCESS_TOKEN_SECRET)
 
 			const id = decodedToken.id
-
 			const user = await db.query(`select email, surname, firstName from users where id = '${id}'`)
 
-			if (user.rows[0].length === 0) {
-				throw new Error()
+			if (user.rows.length === 0) {
+				throw new Error("User not found.")
 			}
+
 			return user.rows[0]
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Failed to retrieve user by ID: ${e.message}`)
 		}
 	}
-	async getuserByOrder(id) {
+
+	async getUserByOrder(id) {
 		try {
 			const info = await db.query(`select users_id from orders where id = '${id}'`)
 
-			if (info.rows[0].length === 0) {
-				throw new Error()
+			if (info.rows.length === 0) {
+				throw new Error("Order not found.")
 			}
 
-			const user = await db.query(`select email, surname, firstName from users where id = '${info}'`)
+			const user = await db.query(`select email, surname, firstName from users where id = '${info.rows[0].users_id}'`)
 
 			return user.rows[0]
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Failed to retrieve user by order: ${e.message}`)
 		}
 	}
+
 	async userUpdate(token, info) {
 		try {
 			const authHeaders = token && token.split(" ")[1]
-
 			const decodedToken = jwt.verify(authHeaders, process.env.ACCESS_TOKEN_SECRET)
 			const id = decodedToken.id
 
 			const oldInfo = await db.query(`select * from users where id = '${id}'`)
 
-			if (oldInfo.rows[0].length === 0) {
-				throw new Error()
+			if (oldInfo.rows.length === 0) {
+				throw new Error("User not found.")
 			}
 
 			const newInfo = await db.query(
-				`update users set surname = '${info.surname}', firstName = '${info.name}' where id = '${id}' returning surname, firstName as name`
+				`update users set surname = '${info.surname}', firstName = '${info.name}' 
+				where id = '${id}' returning surname, firstName as name`
 			)
 
 			return newInfo.rows[0]
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Failed to update user information: ${e.message}`)
 		}
 	}
+
 	async deletedUser(token) {
 		try {
 			const authHeaders = token && token.split(" ")[1]
-
 			const decodedToken = jwt.verify(authHeaders, process.env.ACCESS_TOKEN_SECRET)
 			const id = decodedToken.id
 
 			const allow = await db.query(`SELECT * FROM users WHERE id = '${id}'`)
 
-			if (allow.rows[0].length === 0) {
-				throw new Error()
+			if (allow.rows.length === 0) {
+				throw new Error("User not found.")
 			}
 
 			await db.query(`delete from users where id = ${id}`)
-
 			return id
 		} catch (e) {
-			throw new Error()
+			throw new Error(`Failed to delete user: ${e.message}`)
 		}
 	}
 }

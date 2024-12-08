@@ -7,7 +7,9 @@ function checkToken(req, res, next) {
 		jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
 		next()
 	} catch (e) {
-		res.sendStatus(403)
+		res.status(403).json({
+			error: "Invalid or expired token.",
+		})
 	}
 }
 
