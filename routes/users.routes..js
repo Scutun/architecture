@@ -3,16 +3,14 @@ const router = new Router()
 const userController = require("../controllers/user.controller")
 const checkToken = require("../middleware/checkToken")
 
-router.use("/user", checkToken)
+router.post("/users/auth", userController.logUser)
 
-router.post("/logIn", userController.logUser)
+router.post("/users/create", userController.createUser)
+router.put("/users/update", checkToken, userController.updateUser)
 
-router.post("/create", userController.createUser)
-router.put("/user/update", userController.updateUser)
+router.get("/users", checkToken, userController.getUser)
 
-router.get("/user", userController.getUser)
-
-router.delete("/user/delete", userController.deleteUser)
-router.get("/user/find/:id", userController.getUserInOrders)
+router.delete("/users/delete", checkToken, userController.deleteUser)
+router.get("/users/find/:id", checkToken, userController.getUserInOrders)
 
 module.exports = router
