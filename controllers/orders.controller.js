@@ -23,7 +23,7 @@ class userController {
 			})
 		}
 	}
-	async getOrder(req, res) {
+	async getOrders(req, res) {
 		try {
 			const orders = await model.getAllOrders(req.headers.authorisation)
 			res.json(orders)
