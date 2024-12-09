@@ -20,17 +20,19 @@ CREATE TABLE IF NOT EXISTS projects (
     description TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS projectPhoto (
+CREATE TABLE IF NOT EXISTS projectPhotos (
     id SERIAL PRIMARY KEY,
     photoPath VARCHAR(150) NOT NULL,
     projects_id INTEGER REFERENCES projects(id)
 );
 
 
-CREATE TABLE IF NOT EXISTS architect(
+CREATE TABLE IF NOT EXISTS architects(
     id SERIAL PRIMARY KEY,
     email VARCHAR(100) NOT NULL UNIQUE,
-    phone VARCHAR(100) NOT NULL UNIQUE,
+    phone VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
     experience INTEGER NOT NULL,
     information TEXT NOT NULL,
     photo VARCHAR(150) NOT NULL,
