@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE TABLE IF NOT EXISTS projects (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    photo VARCHAR(150) NOT NULL
+    description TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS projectPhoto (
