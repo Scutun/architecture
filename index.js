@@ -1,10 +1,11 @@
 require("dotenv").config()
 require("./db")
-const path = require("path")
 
+const path = require("path")
 const express = require("express")
 const app = express()
 const cors = require("cors")
+const PORT = process.env.PORT || 3020
 
 const userRouter = require("./routes/users.routes")
 const orderRouter = require("./routes/orders.routes")
@@ -22,8 +23,8 @@ app.use("/api", projectRouter)
 app.use("/api", commentRouter)
 app.use("/api", architectRouter)
 app.use("/api", photoRouter)
-
-const PORT = process.env.PORT || 3020
+app.use("/static/project-photo", express.static(path.join(__dirname, "project-photo")))
+app.use("/static/architect-photo", express.static(path.join(__dirname, "architect-photo")))
 
 app.listen(PORT, () => {
 	console.log("Server Work", PORT)
