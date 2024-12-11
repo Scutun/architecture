@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS projects (
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM projects WHERE name = 'Особняк Лесная Тишина') THEN
-        INSERT INTO projects (name, descrip tion) 
+        INSERT INTO projects (name, description) 
         VALUES (
             'Особняк Лесная Тишина', 
             'Современный двухэтажный дом с элементами эко-дизайна, идеально вписывающийся в окружение хвойного леса. Использованы натуральные материалы: кирпич, дерево, металл. Большие окна обеспечивают максимальное естественное освещение и вид на природу. Просторная терраса с навесом подходит для семейных ужинов на свежем воздухе. Дом оборудован крытой парковкой, что идеально для загородной жизни.'
@@ -38,15 +38,15 @@ BEGIN
         );
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM projects WHERE name = 'Особняк Лесная Сказка') THEN
+    IF NOT EXISTS (SELECT 1 FROM projects WHERE name = 'Особняк Шале') THEN
         INSERT INTO projects (name, description) 
-        VALUES ('Особняк Лесная Сказка', 'Уютный двухэтажный особняк в стиле шале, окруженный хвойным лесом. Имеет просторную гостиную с камином, гараж и сауну.');
+        VALUES ('Особняк Шале', 'Уютный двухэтажный особняк в стиле шале, окруженный хвойным лесом. Имеет просторную гостиную с камином и сауну.');
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM projects WHERE name = 'Современный Городской Дом') THEN
+    IF NOT EXISTS (SELECT 1 FROM projects WHERE name = 'Городской Дом') THEN
         INSERT INTO projects (name, description) 
         VALUES (
-            'Современный Городской Дом', 
+            'Городской Дом', 
             'Этот стильный и элегантный городской дом отличается продуманной архитектурой и современными инженерными решениями. Сочетание кирпичной и стеклянной отделки придает дому неповторимый облик, идеально вписываясь в городской ландшафт. Просторные помещения, открытые балконы и продуманные зоны для отдыха создают комфортную атмосферу для проживания. Большие окна обеспечивают отличное естественное освещение, а инновационные технологии в сочетании с классическими элементами делают дом не только современным, но и энергоэффективным. Внешний вид дома с лаконичным фасадом, декоративными элементами и современными материалами создает впечатление гармонии и сдержанного респектабельного стиля. Этот дом идеально подходит для комфортного проживания в динамичном городском окружении, предлагая уют и функциональность.'
         );
     END IF;
@@ -58,6 +58,25 @@ CREATE TABLE IF NOT EXISTS projectPhotos (
     photoPath VARCHAR(150) NOT NULL,
     projects_id INTEGER REFERENCES projects(id)
 );
+
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM projectPhotos WHERE photoPath = 'lesnaya-tishina-front.jpg' OR photoPath ='lesnaya-tishina-side.jpg') THEN
+    INSERT INTO projectPhotos (photoPath, projects_id) VALUES ('lesnaya-tishina-front.jpg', '1'),('lesnaya-tishina-side.jpg', '1');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM projectPhotos WHERE photoPath = 'rezidenciya-front.jpg' OR photoPath ='rezidenciya-side.jpg') THEN
+    INSERT INTO projectPhotos (photoPath, projects_id) VALUES ('rezidenciya-front.jpg', '2'),('rezidenciya-side.jpg', '2');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM projectPhotos WHERE photoPath = 'shale-front.jpg' OR photoPath ='shale-side.jpg') THEN
+    INSERT INTO projectPhotos (photoPath, projects_id) VALUES ('shale-front.jpg', '3'),('shale-side.jpg', '3');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM projectPhotos WHERE photoPath = 'gorodskoj-dom-front.jpg' OR photoPath ='gorodskoj-dom-side.jpg') THEN
+    INSERT INTO projectPhotos (photoPath, projects_id) VALUES ('gorodskoj-dom-front.jpg', '4'),('gorodskoj-dom-side.jpg', '4');
+  END IF;
+END $$;
 
 
 CREATE TABLE IF NOT EXISTS architects(
@@ -75,25 +94,25 @@ CREATE TABLE IF NOT EXISTS architects(
 
 DO $$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'ivan.petrov@archcompany.ru') THEN
+    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'stepan.golub@mail.ru') THEN
         INSERT INTO architects (email, phone, name, surname, experience, information, photo, projects_id)
-        VALUES ('ivan.petrov@archcompany.ru', '+79161234567', 'Степан', 'Голубев', 12, 
-                'Опытный архитектор, специализирующийся на проектировании жилых комплексов.', 
-                'photos/ivan_petrov.jpg', 2);
+        VALUES ('stepan.golub@mail.ru', '+79161234567', 'Степан', 'Голубев', 12, 
+                'Опытный архитектор, специализирующийся на проектировании городских жилых домов.', 
+                'golubev-architect.jpg', 4);
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'anna.ivanova@archcompany.ru') THEN
+    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'anna.arhip@mail.ru') THEN
         INSERT INTO architects (email, phone, name, surname, experience, information, photo, projects_id)
-        VALUES ('anna.arhip@archcompany.ru', '+79261234567', 'Анна', 'Архипова', 8, 
+        VALUES ('anna.arhip@mail.ru', '+79261234567', 'Анна', 'Архипова', 8, 
                 'Архитектор с опытом работы в области экологически чистых и энергоэффективных зданий.', 
-                'photos/anna_ivanova.jpg', 4);
+                'arhipova-architect.jpg', 3);
     END IF;
 
-    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'sergey.smirnov@archcompany.ru') THEN
+    IF NOT EXISTS (SELECT 1 FROM architects WHERE email = 'sergey.lebed@mail.ru') THEN
         INSERT INTO architects (email, phone, name, surname, experience, information, photo, projects_id)
-        VALUES ('sergey.smirnov@archcompany.ru', '+79361234567', 'Сергей', 'Лебедев', 5, 
+        VALUES ('sergey.lebed@mail.ru', '+79361234567', 'Сергей', 'Лебедев', 5, 
                 'Молодой архитектор, занимающийся проектами в области урбанистики и развития инфраструктуры.', 
-                'photos/sergey_smirnov.jpg', 1);
+                'lebedev-architect.jpg', 1);
     END IF;
 END $$;
 

@@ -6,7 +6,7 @@ const db = require("../db")
 class modelArchitects {
 	async allArchitects() {
 		try {
-			const architects = await db.query(`select id, surname, name, information from architects`)
+			const architects = await db.query(`select id, surname, name, information, photo from architects`)
 
 			if (architects.rows.length === 0) {
 				throw new Error("No architects found.")

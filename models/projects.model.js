@@ -20,14 +20,21 @@ class modelProject {
 	}
 	async getEveryProject() {
 		try {
-			const info = await db.query(`select projects.id, projects.name, projects.description, projectPhotos.photoPath as photo from projects
-        left join projectPhotos on projects.id = projectPhotos.projects_id`)
+			const info = await db.query(`select id, name, description from projects`)
 
 			if (info.rows.length === 0) {
 				throw new Error("No projects found.")
 			}
 
-			return info.rows
+			const newArray = await Promise.all(
+				info.rows.map(async (el) => {
+					const photo = (await db.query(`select photoPath as photo from projectPhotos where projects_id = '${el.id}'`)).rows.map((el) => el.photo)
+					el.photo = photo
+					return el
+				})
+			)
+
+			return newArray
 		} catch (e) {
 			throw new Error(`Failed to retrieve projects: ${e.message}`)
 		}
