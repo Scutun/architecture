@@ -21,7 +21,7 @@ class modelComments {
 
 			return comment.rows[0]
 		} catch (e) {
-			throw new Error(`Failed to create a comment: ${e.message}`)
+			throw new Error(`Failed to create a comment.`)
 		}
 	}
 	async allComments() {
