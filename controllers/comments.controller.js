@@ -7,7 +7,7 @@ class commentController {
 		try {
 			const info = await model.newComment(req.headers.authorization, req.body)
 
-			res.json(info)
+			res.status(201).json(info)
 		} catch (e) {
 			res.status(400).json({
 				error: e.message,
