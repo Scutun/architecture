@@ -15,7 +15,7 @@ class modelOrders {
 			const allow = await db.query(`select count(id) as counter from orders where status_id < 4 and users_id = '${id}'`)
 
 			if (Number(allow.rows[0].counter) !== 0) {
-				throw new Error("You have an unfinished order.")
+				throw new Error("User has an unfinished order.")
 			}
 
 			const newOrder = await db.query(`insert into orders (description, projectType, users_id)
@@ -34,7 +34,7 @@ class modelOrders {
 			const id = decodedToken.id
 
 			const order = await db.query(
-				`select orders.id, projects.name as projectType, orders.description, users.surname,  users.firstName as name, users.email, status.name as status                from orders 
+				`select orders.id, projects.name as projectType, orders.description, users.surname,  users.firstName as name, users.email, status.name as status from orders 
                 left join projects on orders.projectType = projects.id
                 left join users on orders.users_id = users.id
                 left join status on orders.status_id = status.id
