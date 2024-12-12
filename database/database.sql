@@ -125,24 +125,24 @@ CREATE TABLE IF NOT EXISTS status(
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Created') THEN
-    INSERT INTO status (name) VALUES ('Created');
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Создан') THEN
+    INSERT INTO status (name) VALUES ('Создан');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Comfirmed') THEN
-    INSERT INTO status (name) VALUES ('Comfirmed');
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Подтвержден') THEN
+    INSERT INTO status (name) VALUES ('Подтвержден');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'In progress') THEN
-    INSERT INTO status (name) VALUES ('In progress');
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'В работе') THEN
+    INSERT INTO status (name) VALUES ('В работе');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Done') THEN
-    INSERT INTO status (name) VALUES ('Done');
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Выполнен') THEN
+    INSERT INTO status (name) VALUES ('Выполнен');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Canceled') THEN
-    INSERT INTO status (name) VALUES ('Canceled');
+  IF NOT EXISTS (SELECT 1 FROM status WHERE name = 'Отменен') THEN
+    INSERT INTO status (name) VALUES ('Отменен');
   END IF;
 END $$;
 
