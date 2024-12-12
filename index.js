@@ -23,8 +23,8 @@ app.use("/api", projectRouter)
 app.use("/api", commentRouter)
 app.use("/api", architectRouter)
 app.use("/api", photoRouter)
-app.use("/static/project-photo", express.static(path.join(__dirname, "project-photo")))
-app.use("/static/architect-photo", express.static(path.join(__dirname, "architect-photo")))
+app.use("/api/projects/static/photo", express.static(path.join(__dirname, "project-photo")))
+app.use("/api/architects/static/photo", express.static(path.join(__dirname, "architect-photo")))
 
 app.listen(PORT, () => {
 	console.log("Server Work", PORT)

@@ -4,7 +4,7 @@ const path = require("path")
 const fs = require("fs")
 
 class PhotoController {
-	async getProjectPhoto(req, res) {
+	async getProjectPhotoUrl(req, res) {
 		try {
 			const photoPath = path.join(__dirname, "..", "project-photo", req.params.photo)
 
@@ -14,7 +14,7 @@ class PhotoController {
 				})
 			}
 
-			const photoUrl = `${req.protocol}://${req.get("host")}/static/project-photo/${req.params.photo}`
+			const photoUrl = `${req.protocol}://${req.get("host")}/api/projects/static/photo/${req.params.photo}`
 			res.json({ photoUrl: photoUrl })
 		} catch (e) {
 			res.status(500).json({
@@ -23,7 +23,7 @@ class PhotoController {
 		}
 	}
 
-	async getArchitectPhoto(req, res) {
+	async getArchitectPhotoUrl(req, res) {
 		try {
 			const photoPath = path.join(__dirname, "..", "architect-photo", req.params.photo)
 
@@ -33,7 +33,7 @@ class PhotoController {
 				})
 			}
 
-			const photoUrl = `${req.protocol}://${req.get("host")}/static/architect-photo/${req.params.photo}`
+			const photoUrl = `${req.protocol}://${req.get("host")}/api/architects/static/photo/${req.params.photo}`
 			res.json({ photoUrl: photoUrl })
 		} catch (e) {
 			res.status(500).json({
