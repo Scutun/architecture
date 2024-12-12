@@ -154,3 +154,39 @@ create table if not exists orders(
     status_id INTEGER default 1 REFERENCES status(id),
     users_id INTEGER REFERENCES users(id)
 );
+
+
+DO $$
+BEGIN
+  -- Добавляем пользователей
+  IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'ivan.ivanov@example.com') THEN
+    INSERT INTO users (email, password, surname, firstName)
+    VALUES ('ivan.ivanov@example.com', 'password123', 'Иванов', 'Иван');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'petr.petrov@example.com') THEN
+    INSERT INTO users (email, password, surname, firstName)
+    VALUES ('petr.petrov@example.com', 'securepass456', 'Петров', 'Петр');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM users WHERE email = 'alex.sidorov@example.com') THEN
+    INSERT INTO users (email, password, surname, firstName)
+    VALUES ('alex.sidorov@example.com', 'mypassword789', 'Сидоров', 'Алексей');
+  END IF;
+
+  -- Добавляем комментарии о работе архитектурного бюро
+  IF EXISTS (SELECT 1 FROM users WHERE email = 'ivan.ivanov@example.com') THEN
+    INSERT INTO comments (description, users_id)
+    SELECT 'Разработал функциональный и современный проект офисного здания.', id FROM users WHERE email = 'ivan.ivanov@example.com';
+  END IF;
+
+  IF EXISTS (SELECT 1 FROM users WHERE email = 'petr.petrov@example.com') THEN
+    INSERT INTO comments (description, users_id)
+    SELECT 'Создал уникальный дизайн жилого комплекса, который впечатлил клиентов.', id FROM users WHERE email = 'petr.petrov@example.com';
+  END IF;
+
+  IF EXISTS (SELECT 1 FROM users WHERE email = 'alex.sidorov@example.com') THEN
+    INSERT INTO comments (description, users_id)
+    SELECT 'Успешно реализовал проект реконструкции исторического здания.', id FROM users WHERE email = 'alex.sidorov@example.com';
+  END IF;
+END $$;
