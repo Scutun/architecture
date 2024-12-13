@@ -12,8 +12,11 @@ class modelComments {
 
 			const id = decodedToken.id
 
-			const commentId = await db.query(`insert into comments (description, users_id) 
-				values ('${info.description}', '${id}') returning id`)
+			const commentId = await db.query(
+				`insert into comments (description, users_id) 
+				values ($1, $2	) returning id`,
+				[info.description, id]
+			)
 
 			const comment = await db.query(`select comments.id, comments.description, users.surname, users.firstName as name from comments
 				left join users on comments.users_id = users.id

@@ -5,9 +5,12 @@ const db = require("../db")
 class modelProject {
 	async getProject(id) {
 		try {
-			const info = await db.query(`select projects.id, projects.name, projects.description, projectPhotos.photoPath as photo from projects
+			const info = await db.query(
+				`select projects.id, projects.name, projects.description, projectPhotos.photoPath as photo from projects
         left join projectPhotos on projects.id = projectPhotos.projects_id
-        where projects.id = '${id}'`)
+        where projects.id = $1`,
+				[id]
+			)
 
 			if (info.rows.length === 0) {
 				throw new Error("No such project found.")
