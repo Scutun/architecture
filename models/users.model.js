@@ -53,7 +53,7 @@ class modelUsers {
 			const decodedToken = jwt.verify(authHeaders, process.env.ACCESS_TOKEN_SECRET)
 
 			const id = decodedToken.id
-			const user = await db.query(`select email, surname, firstName from users where id = '${id}'`)
+			const user = await db.query(`select email, surname, firstName as name from users where id = '${id}'`)
 
 			if (user.rows.length === 0) {
 				throw new Error("User not found.")
@@ -94,7 +94,7 @@ class modelUsers {
 				throw new Error("Order not found.")
 			}
 
-			const user = await db.query(`select email, surname, firstName from users where id = '${info.rows[0].users_id}'`)
+			const user = await db.query(`select email, surname, firstName as name from users where id = '${info.rows[0].users_id}'`)
 
 			return user.rows[0]
 		} catch (e) {
