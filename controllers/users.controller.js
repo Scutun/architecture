@@ -34,6 +34,19 @@ class userController {
 			})
 		}
 	}
+
+	async getShortUser(req, res) {
+		try {
+			const info = await model.getShortUserById(req.headers.authorization)
+
+			res.json(info)
+		} catch (e) {
+			res.status(404).json({
+				error: e.message,
+			})
+		}
+	}
+
 	async getUserInOrders(req, res) {
 		try {
 			const info = await model.getUserByOrder(req.params.id)

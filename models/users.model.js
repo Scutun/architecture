@@ -65,6 +65,27 @@ class modelUsers {
 		}
 	}
 
+	async getShortUserById(token) {
+		try {
+			const authHeaders = token && token.split(" ")[1]
+			const decodedToken = jwt.verify(authHeaders, process.env.ACCESS_TOKEN_SECRET)
+
+			const id = decodedToken.id
+			const user = await db.query(`SELECT email, surname, firstName FROM users WHERE id = '${id}'`)
+
+			if (user.rows.length === 0) {
+				throw new Error("User not found.")
+			}
+
+			const { email } = user.rows[0]
+			const shortenName = `${user.rows[0].surname} ${user.rows[0].firstname[0]}.`
+
+			return { email, name: shortenName }
+		} catch (e) {
+			throw new Error(`Failed to retrieve user by ID: ${e.message}`)
+		}
+	}
+
 	async getUserByOrder(id) {
 		try {
 			const info = await db.query(`select users_id from orders where id = $1`, [id])
