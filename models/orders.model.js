@@ -61,11 +61,10 @@ class modelOrders {
 			const id = decodedToken.id
 
 			const order = await db.query(
-				`select orders.id, projects.name as projectType, orders.description, users.surname,  users.firstName as name, users.email, status.name as status from orders 
+				`select orders.id, projects.name as type, orders.description, status.name as status from orders 
                 left join projects on orders.projectType = projects.id
-                left join users on orders.users_id = users.id
                 left join status on orders.status_id = status.id
-                where orders.users_id = '${id}' and orders.status_id > 3`
+                where orders.users_id = '${id}'`
 			)
 
 			if (order.rows.length === 0) {
@@ -107,7 +106,7 @@ class modelOrders {
 			)
 
 			const order = await db.query(
-				`select orders.id, projects.name as projectType, orders.description, users.surname,  users.firstName as name, users.email, status.name as status from orders 
+				`select orders.id, projects.name as type, orders.description, users.surname,  users.firstName as name, users.email, status.name as status from orders 
                     left join projects on orders.projectType = projects.id
                     left join users on orders.users_id = users.id
                     left join status on orders.status_id = status.id
