@@ -138,6 +138,7 @@ class modelUsers {
 				throw new Error("User not found.")
 			}
 
+			await db.query(`update orders set status_id = 5`)
 			await db.query(`update orders set users_id = NULL`)
 			await db.query(`delete from users where id = ${id}`)
 			return id

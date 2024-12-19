@@ -93,6 +93,8 @@ class modelOrders {
 	}
 	async updatedOrder(info) {
 		try {
+			const status = await db.query(`SELECT id FROM projects WHERE name = $1`, [info.project])
+
 			const data = await db.query(`select status_id from orders where id = $1`, [info.id])
 
 			if (data.rows.length === 0 || data.rows[0].status_id > 3) {
@@ -102,7 +104,7 @@ class modelOrders {
 			await db.query(
 				`update orders set description = $1, projectType = $2 
                 where id = $3`,
-				[info.description, info.project, info.id]
+				[info.description, status.rows[0].id, info.id]
 			)
 
 			const order = await db.query(
